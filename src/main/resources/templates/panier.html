@@ -1,0 +1,42 @@
+<html xmlns:th="https://www.thymeleaf.org">
+    <body>
+        <h1 th:text="'Panier de la commande : ' + ${commande?.titre}"/>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="article : ${articles}">
+                    <td th:text="${article.nomArticle}"></td>
+                    <td th:text="${article.qte}"></td>
+                    <td th:text="${article.prix}"></td>
+                    <td>
+                        <form th:action="@{/store/deleteArticle/{idArt}(idArt=${article.idArt})}" method="post">
+    					<input type="hidden" name="id" th:value="${commande.id}" />
+    					<button type="submit">Supprimer</button>
+						</form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="/store/commande">Retour aux commandes</a>
+        
+        <!-- Formulaire d'ajout d'un article -->
+        <h2>Ajouter un article</h2>
+            <form th:action="@{/store/addArticle/{id}(id=${commande.id})}" method="post">
+                Nom de l'article :<input type="text" name="nomArticle" required>
+                Quantité :<input type="number" name="qte" min="1" required>
+                Prix :<input type="number" name="prix" step="0.01" required>
+    
+                <button type="submit">Ajouter</button>
+            </form>
+
+    </body>
+</html>
