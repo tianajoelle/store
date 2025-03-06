@@ -71,5 +71,23 @@ public class ArticlesController {
         redirectAttributes.addFlashAttribute("success", "Article supprimé avec succès !");
         return new RedirectView("/store/panier?id=" + id);
     }
+    
+    @GetMapping("/panier/impression")
+    public ModelAndView imprimerCommande(@RequestParam Long id) {
+        Optional<Commande> commandeOpt = cdeService.findByCommandeId(id);
+
+        if (commandeOpt.isEmpty()) {
+            return new ModelAndView("redirect:/store/commande");
+        }
+
+        Commande commande = commandeOpt.get();
+        List<Articles> articles = articleService.getArticlesByCommande(id);
+
+        double total = articles.stream().mapToDouble(a -> a.getPrix() * a.getQte()).sum();
+
+        var model = Map.of("commande", commande, "articles", articles, "total", total);
+        return new ModelAndView("impression", model);
+    }
+
 
 }

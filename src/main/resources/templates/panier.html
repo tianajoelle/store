@@ -1,6 +1,12 @@
 <html xmlns:th="https://www.thymeleaf.org">
     <body>
         <h1 th:text="'Panier de la commande : ' + ${commande?.titre}"/>
+        <a th:href="@{/store/panier/impression(id=${commande.id})}" target="_blank">
+    	<button>Imprimer</button>
+		</a>
+		
+       	<a href="/store/commande">Retour aux commandes</a>
+       	<br/>
 
         <table border="1">
             <thead>
@@ -25,9 +31,7 @@
                 </tr>
             </tbody>
         </table>
-
-        <a href="/store/commande">Retour aux commandes</a>
-        
+     
         <!-- Formulaire d'ajout d'un article -->
         <h2>Ajouter un article</h2>
             <form th:action="@{/store/addArticle/{id}(id=${commande.id})}" method="post">
