@@ -55,7 +55,7 @@ public class ClientController {
             // Ajouter l'email au modèle pour le transmettre aux autres pages
             model.addAttribute("clientEmail", optionalClient.get().getEmail());
             
-            // Redirection vers la page de commande
+           
             return new ModelAndView("redirect:/store/commande");
         }else {
             // Redirection avec message d'erreur pour la connexion échouée

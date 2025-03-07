@@ -50,7 +50,7 @@ public class ArticlesController {
             return new ModelAndView("redirect:/store/commande"); // Redirection si la commande n'existe pas
         }
 
-        Commande commande = commandeOpt.get(); // Extraire l'objet réel
+        Commande commande = commandeOpt.get();
         List<Articles> articles = articleService.getArticlesByCommande(id);
 
         var model = Map.of("commande", commande, "articles", articles);
@@ -64,14 +64,9 @@ public class ArticlesController {
             @RequestParam String nomArticle,
             @RequestParam int qte,
             @RequestParam double prix,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-    		String clientEmail = (String) session.getAttribute("clientEmail");
-        
-    		if (clientEmail == null) {
-            return new RedirectView("/store/home"); // Redirige si l'utilisateur n'est pas connecté
-        }
-        articleService.addArticle(id, nomArticle, qte, prix, clientEmail);
+            RedirectAttributes redirectAttributes) {
+    		
+        articleService.addArticle(id, nomArticle, qte, prix);
         redirectAttributes.addFlashAttribute("success", "Article ajouté avec succès !");
         return new RedirectView("/store/panier?id=" + id);
     }

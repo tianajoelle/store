@@ -19,15 +19,11 @@ public class ArticlesService implements ArticlesItf{
     @Autowired
     private CommandeRepository cdeRepo;
     
-    @Autowired
-    private ClientRepository clientRepo;
 
-    public void addArticle(Long id, String nomArticle, int qte, double prix, String clientEmail){
-    	clientRepo.findById(clientEmail).ifPresent(client -> {
+    public void addArticle(Long id, String nomArticle, int qte, double prix){
             Commande commande = cdeRepo.findById(id).orElseThrow(() -> new RuntimeException("Commande non trouvée"));
             Articles article = new Articles(nomArticle, qte, prix, commande);
-            repo.save(article);
-        });
+            repo.save(article);  
     
     }
 
