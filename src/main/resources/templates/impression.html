@@ -4,7 +4,7 @@
 
     <h1>Commande #<span th:text="${commande.id}"></span></h1>
 
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th>Article</th>
@@ -18,7 +18,7 @@
                 <td th:text="${article.nomArticle}"></td>
                 <td th:text="${article.qte}"></td>
                 <td th:text="${article.prix} + ' €'"></td>
-                <td th:text="${article.qte * article.prix} + ' €'"></td>
+                <td th:text="${article.qte * article.prix} + ' €'" step = "0.01"></td>
             </tr>
         </tbody>
     </table>

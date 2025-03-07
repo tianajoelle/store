@@ -52,7 +52,7 @@ public class ClientController {
             // Stocker uniquement l'email dans la session
             session.setAttribute("clientEmail", optionalClient.get().getEmail());
             
-            // Ajouter l'email au modèle pour le transmettre à la page commande
+            // Ajouter l'email au modèle pour le transmettre aux autres pages
             model.addAttribute("clientEmail", optionalClient.get().getEmail());
             
             // Redirection vers la page de commande

@@ -21,6 +21,8 @@ import com.example.store.model.Commande;
 import com.example.store.service.ArticlesService;
 import com.example.store.service.CommandeService;
 
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/store")
@@ -35,7 +37,13 @@ public class ArticlesController {
 
 
     @GetMapping("/panier")
-    public ModelAndView panier(@RequestParam Long id) {
+    public ModelAndView panier(@RequestParam Long id,
+    		HttpSession session) {
+    	String clientEmail = (String) session.getAttribute("clientEmail");
+        
+		if (clientEmail == null) {
+        return new ModelAndView("redirect:/store/home"); // Redirige si l'utilisateur n'est pas connecté
+		}
         Optional<Commande> commandeOpt = cdeService.findByCommandeId(id);
         
         if (commandeOpt.isEmpty()) {
@@ -56,8 +64,14 @@ public class ArticlesController {
             @RequestParam String nomArticle,
             @RequestParam int qte,
             @RequestParam double prix,
-            RedirectAttributes redirectAttributes) {
-        articleService.addArticle(id, nomArticle, qte, prix);
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+    		String clientEmail = (String) session.getAttribute("clientEmail");
+        
+    		if (clientEmail == null) {
+            return new RedirectView("/store/home"); // Redirige si l'utilisateur n'est pas connecté
+        }
+        articleService.addArticle(id, nomArticle, qte, prix, clientEmail);
         redirectAttributes.addFlashAttribute("success", "Article ajouté avec succès !");
         return new RedirectView("/store/panier?id=" + id);
     }
@@ -65,7 +79,7 @@ public class ArticlesController {
     @PostMapping("/deleteArticle/{idArt}")
     public RedirectView deleteArticle(
             @RequestParam Long id,
-            @PathVariable Long idArt, // <-- Utiliser @PathVariable pour idArt
+            @PathVariable Long idArt,
             RedirectAttributes redirectAttributes) {
         articleService.deleteArticle(idArt);
         redirectAttributes.addFlashAttribute("success", "Article supprimé avec succès !");
@@ -73,7 +87,13 @@ public class ArticlesController {
     }
     
     @GetMapping("/panier/impression")
-    public ModelAndView imprimerCommande(@RequestParam Long id) {
+    public ModelAndView imprimerCommande(@RequestParam Long id,
+    		HttpSession session) {
+    	String clientEmail = (String) session.getAttribute("clientEmail");
+        
+		if (clientEmail == null) {
+        return new ModelAndView("redirect:/store/home"); // Redirige si l'utilisateur n'est pas connecté
+		}
         Optional<Commande> commandeOpt = cdeService.findByCommandeId(id);
 
         if (commandeOpt.isEmpty()) {

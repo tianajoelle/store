@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.store.model.Articles;
 
 public interface ArticlesItf {
-    void addArticle(Long id, String nomArticle, int qte, double prix);
+    void addArticle(Long id, String nomArticle, int qte, double prix, String clientEmail);
 
     List<Articles> getArticlesByCommande(Long id);
     
